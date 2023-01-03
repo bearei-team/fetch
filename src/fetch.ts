@@ -93,12 +93,12 @@ const request = (url: string, options: FetchOptions = {}) => {
   const timer = setTimeout(() => abort.abort(), requestTimeout);
 
   return fetch(requestUrl, { signal, ...requestInit })
-    .then(response => {
+    .then(handleResponse)
+    .catch(handleError)
+    .finally(() => {
+      timer.unref?.();
       clearTimeout(timer);
-
-      return handleResponse(response);
-    })
-    .catch(handleError);
+    });
 };
 
 Object.defineProperty(request, 'defaults', {

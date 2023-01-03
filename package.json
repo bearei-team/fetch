@@ -1,6 +1,6 @@
 {
   "name": "@bearei/fetch",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "./lib/commonjs/index",
   "module": "./lib/module/index",
   "types": "./lib/commonjs/index.d.ts",
@@ -11,8 +11,8 @@
   "keywords": [
     "react",
     "react native",
-    "fetch",
-    "typescript"
+    "typescript",
+    "fetch"
   ],
   "repository": {
     "type": "git",
