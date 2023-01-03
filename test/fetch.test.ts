@@ -14,9 +14,9 @@ describe('test/fetch.test.ts', () => {
   });
 
   test('should be the default request', async () => {
-    await fetch('https://bearei.com/default/succeed').then(result =>
-      expect(result.data).toEqual(GOOD),
-    );
+    await fetch('https://bearei.com/default/succeed').then(result => {
+      expect(result.data).toEqual(GOOD);
+    });
   });
 
   test('should be a successful request', async () => {
@@ -31,14 +31,8 @@ describe('test/fetch.test.ts', () => {
 
   test('should be an exception request', async () => {
     await fetch('https://bearei.com/fail', {
-      timeout: 4000,
+      timeout: 2000,
     }).catch(error => expect(error.status).toEqual(404));
-  });
-
-  test('should be a timeout request', async () => {
-    await fetch('https://www.bearei.com', {
-      timeout: 1,
-    }).catch(error => expect(typeof error).toEqual('object'));
   });
 
   test('should be responding to a request for JSON data', async () => {
@@ -53,5 +47,14 @@ describe('test/fetch.test.ts', () => {
       method: 'POST',
       data: 'ok',
     }).then(result => expect(result.data).toEqual(GOOD));
+  });
+
+  test('should be a timeout request', async () => {
+    await fetch('https://www.bing.com', {
+      timeout: 1,
+    }).catch(error => {
+      expect(error.type).toEqual('aborted');
+      expect(error.status).toEqual(408);
+    });
   });
 });

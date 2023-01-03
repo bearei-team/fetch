@@ -17,15 +17,17 @@ const handleRequestError = (
   const err = error as Record<string, unknown>;
   const isResponseError = err.status && err.statusText && err.headers;
 
-  if (err.message === 'Aborted') {
-    throw Object.assign(new Error('Request Timeout'), { status: 408 });
+  Object.assign(err, { options });
+
+  if ((err.type as string)?.toLowerCase() === 'aborted') {
+    throw Object.assign(err, { status: 408, message: 'request timeout' });
   }
 
   if (isResponseError) {
     throw err;
   }
 
-  throw Object.assign(err, { options });
+  throw err;
 };
 
 const initHandleRequestError =
