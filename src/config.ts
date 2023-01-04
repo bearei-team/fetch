@@ -11,7 +11,7 @@ export interface HandleConfigsOptions
    * BaseURL` will be automatically prepended to `url`, unless `url` is an
    * absolute URL
    */
-  baseUrl?: string;
+  baseURL?: string;
 }
 
 export const CONFIGS = new Map();

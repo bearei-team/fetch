@@ -17,7 +17,7 @@ describe('test/url.test.ts', () => {
   });
 
   test('should be the handle path', async () => {
-    handleConfigs({ baseUrl: 'https://baerei.com' });
+    handleConfigs({ baseURL: 'https://baerei.com' });
 
     const result = handleRequestUrl('/v1/api?test=test', {
       params: { name: 'bing' },

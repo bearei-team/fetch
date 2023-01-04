@@ -8,15 +8,15 @@ const handleRequestURL = (
   { params = {}, isEncode = true }: HandleRequestURLOptions,
 ) => {
   const handleFullURL = () => {
-    let fullUrl!: URL;
+    let fullURL!: URL;
 
     try {
-      fullUrl = new URL(url);
+      fullURL = new URL(url);
     } catch (error) {
-      fullUrl = new URL(`${configs.get('baseUrl')}${url}`);
+      fullURL = new URL(`${configs.get('baseURL')}${url}`);
     }
 
-    return fullUrl;
+    return fullURL;
   };
 
   const { searchParams, origin, pathname } = handleFullURL();
