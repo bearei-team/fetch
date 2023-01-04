@@ -1,12 +1,12 @@
 export * from './body';
 export { default as body } from './body';
-export * from './defaults';
-export { default as defaults } from './defaults';
+export * from './config';
+export { default as configs } from './config';
 export * from './error';
 export { default as error } from './error';
 export * from './fetch';
-export * from './headers';
-export { default as headers } from './headers';
+export * from './header';
+export { default as headers } from './header';
 export * from './response';
 export { default as response } from './response';
 export * from './url';

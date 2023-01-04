@@ -1,4 +1,4 @@
-import handleDefaults from '../src/defaults';
+import handleConfigs from '../src/config';
 import handleRequestUrl from '../src/url';
 
 describe('test/url.test.ts', () => {
@@ -17,7 +17,7 @@ describe('test/url.test.ts', () => {
   });
 
   test('should be the handle path', async () => {
-    handleDefaults({ baseUrl: 'https://baerei.com' });
+    handleConfigs({ baseUrl: 'https://baerei.com' });
 
     const result = handleRequestUrl('/v1/api?test=test', {
       params: { name: 'bing' },

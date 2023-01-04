@@ -91,17 +91,17 @@ const handleResponseBody = async (
   response: Response,
   options: InitHandleResponseBodyOptions,
 ) => {
-  const handleBody = {
+  const handleBodyFunctions = {
     json: parseJson,
     text: parseText,
     octetStream: parseOctetStream,
     file: parseFile,
   };
 
-  const data = await handleBody[ContentType[type]](response);
-  const result = { ...options, data };
+  const data = await handleBodyFunctions[ContentType[type]](response);
+  const results = { ...options, data };
 
-  return response.ok ? result : Promise.reject(result);
+  return response.ok ? results : Promise.reject(results);
 };
 
 const initHandleResponseBody =

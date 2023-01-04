@@ -1,10 +1,10 @@
 import 'isomorphic-fetch';
 import handleRequestBody from './body';
-import handleDefaults, { DEFAULTS as defaults } from './defaults';
+import handleConfigs, { CONFIGS as configs } from './config';
 import initHandleRequestError from './error';
-import handleRequestHeaders from './headers';
+import handleRequestHeaders from './header';
 import initHandleResponse from './response';
-import handleRequestUrl from './url';
+import handleRequestURL from './url';
 
 /**
  * Body of the request, which is a BodyInit object or null
@@ -47,7 +47,7 @@ export interface FetchOptions extends Omit<RequestInit, 'body'> {
 }
 
 export type FetchType = typeof request & {
-  defaults: typeof handleDefaults;
+  configs: typeof handleConfigs;
 };
 
 const request = (url: string, options: FetchOptions = {}) => {
@@ -70,20 +70,20 @@ const request = (url: string, options: FetchOptions = {}) => {
     headers: requestHeaders,
   });
 
-  const requestUrl = handleRequestUrl(url, { params, isEncode });
-  const requestInit = {
+  const requestURL = handleRequestURL(url, { params, isEncode });
+  const requestTimeout = timeout ?? configs.get('timeout') ?? 3000;
+  const requestConfigs = {
     method,
     headers: requestHeaders,
     body: requestBody,
     ...args,
   };
 
-  const requestTimeout = timeout ?? defaults.get('timeout') ?? 3000;
   const fetchOptions = {
-    url: requestUrl,
+    url: requestURL,
     timeout: requestTimeout,
     params,
-    ...requestInit,
+    ...requestConfigs,
   };
 
   const handleResponse = initHandleResponse(fetchOptions);
@@ -91,18 +91,19 @@ const request = (url: string, options: FetchOptions = {}) => {
   const abort = abortController ?? new AbortController();
   const signal = abort.signal;
   const timer = setTimeout(() => abort.abort(), requestTimeout);
+  const handleFinally = () => {
+    timer.unref?.();
+    clearTimeout(timer);
+  };
 
-  return fetch(requestUrl, { signal, ...requestInit })
+  return fetch(requestURL, { signal, ...requestConfigs })
     .then(handleResponse)
     .catch(handleError)
-    .finally(() => {
-      timer.unref?.();
-      clearTimeout(timer);
-    });
+    .finally(handleFinally);
 };
 
-Object.defineProperty(request, 'defaults', {
-  value: handleDefaults,
+Object.defineProperty(request, 'configs', {
+  value: handleConfigs,
 });
 
 export default request as FetchType;

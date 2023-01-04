@@ -1,4 +1,4 @@
-import { DEFAULTS as defaults } from './defaults';
+import { CONFIGS as configs } from './config';
 import type { FetchOptions } from './fetch';
 
 const handleRequestHeaders = (
@@ -12,18 +12,18 @@ const handleRequestHeaders = (
       )
     : Object.assign(nextHeaders, headers);
 
-  const result = {
+  const results = {
     'content-type': 'application/json; charset=utf-8',
     accept: '*/*',
-    ...defaults.get('headers'),
+    ...configs.get('headers'),
     ...nextHeaders,
   };
 
-  if (result['content-type'].startsWith('multipart/form-data')) {
-    delete result['content-type'];
+  if (results['content-type'].startsWith('multipart/form-data')) {
+    delete results['content-type'];
   }
 
-  return result;
+  return results;
 };
 
 export default handleRequestHeaders;

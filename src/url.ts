@@ -1,33 +1,33 @@
-import { DEFAULTS as defaults } from './defaults';
+import { CONFIGS as configs } from './config';
 import type { FetchOptions } from './fetch';
 
-export type HandleRequestUrlOptions = Pick<FetchOptions, 'params' | 'isEncode'>;
+export type HandleRequestURLOptions = Pick<FetchOptions, 'params' | 'isEncode'>;
 
-const handleRequestUrl = (
+const handleRequestURL = (
   url: string,
-  { params = {}, isEncode = true }: HandleRequestUrlOptions,
+  { params = {}, isEncode = true }: HandleRequestURLOptions,
 ) => {
-  const handleFullUrl = () => {
+  const handleFullURL = () => {
     let fullUrl!: URL;
 
     try {
       fullUrl = new URL(url);
     } catch (error) {
-      fullUrl = new URL(`${defaults.get('baseUrl')}${url}`);
+      fullUrl = new URL(`${configs.get('baseUrl')}${url}`);
     }
 
     return fullUrl;
   };
 
-  const { searchParams, origin, pathname } = handleFullUrl();
-  const requestUrl = `${origin}${pathname !== '/' ? pathname : ''}`;
-  const query = {} as Record<string, unknown>;
+  const { searchParams, origin, pathname } = handleFullURL();
+  const requestURL = `${origin}${pathname !== '/' ? pathname : ''}`;
+  const queries = {} as Record<string, unknown>;
 
   for (const key of searchParams.keys()) {
-    Object.assign(query, { [key]: searchParams.get(key) });
+    Object.assign(queries, { [key]: searchParams.get(key) });
   }
 
-  const queryParams = { ...query, ...params };
+  const queryParams = { ...queries, ...params };
   const paramsString = Object.keys(queryParams)
     .map(key => `${key}=${queryParams[key]}`)
     .join('&');
@@ -36,7 +36,7 @@ const handleRequestUrl = (
     ? encodeURIComponent(paramsString)
     : paramsString;
 
-  return paramsString ? `${requestUrl}?${paramsResult}` : requestUrl;
+  return paramsString ? `${requestURL}?${paramsResult}` : requestURL;
 };
 
-export default handleRequestUrl;
+export default handleRequestURL;
