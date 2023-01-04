@@ -1,4 +1,4 @@
-import handleRequestHeaders from '../src/headers';
+import handleRequestHeaders from '../src/header';
 
 describe('test/headers.test.ts', () => {
   test('should be handle request headers', async () => {

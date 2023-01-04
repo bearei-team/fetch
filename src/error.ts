@@ -14,20 +14,19 @@ const handleRequestError = (
   error: unknown,
   options: InitHandleRequestErrorOptions,
 ) => {
-  const err = error as Record<string, unknown>;
-  const isResponseError = err.status && err.statusText && err.headers;
+  if (typeof error === 'object' && error !== null) {
+    const errs = error as Record<string, unknown>;
 
-  Object.assign(err, { options });
+    Object.assign(errs, { options });
 
-  if ((err.type as string)?.toLowerCase() === 'aborted') {
-    throw Object.assign(err, { status: 408, message: 'request timeout' });
+    if ((errs.type as string)?.toLowerCase() === 'aborted') {
+      throw Object.assign(errs, { status: 408, message: 'request timeout' });
+    }
+
+    throw errs;
   }
 
-  if (isResponseError) {
-    throw err;
-  }
-
-  throw err;
+  throw error;
 };
 
 const initHandleRequestError =
